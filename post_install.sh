@@ -15,6 +15,7 @@ PKGS=(
 	# COMPILER
 	'clang'
 	'gcc'
+	'make'
 	# TERM
 	'terminator'
 	# NVIM DEPEDENCIES
