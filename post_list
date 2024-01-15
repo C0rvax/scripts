@@ -17,6 +17,7 @@ PKGS=(
 	'clang'
 	'gcc'
 	'make'
+	'valgrind'
 	# UTILS
 	'gimp'
 	'htop'
