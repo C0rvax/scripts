@@ -1,0 +1,38 @@
+# Code couleur
+rouge='\e[1;31m'
+jaune='\e[1;33m'
+bleu='\e[1;34m'
+violet='\e[1;35m'
+vert='\e[1;32m'
+neutre='\e[0;m'
+
+# LIST OF PACKAGES
+
+PKGS=(
+
+	# PACMAN
+	'curl'
+	'nala'
+	# COMPILER
+	'clang'
+	'gcc'
+	'make'
+	# UTILS
+	'gimp'
+	'htop'
+	'neofetch'
+	'ufw'
+	'git'
+	# TERM
+	'terminator'
+	# NVIM DEPEDENCIES
+	'fd-find'
+	'ripgrep'
+	'python3'
+	# APP
+	'freecad'
+	'libreoffice'
+	# ZSH
+	'zsh'
+)
+
