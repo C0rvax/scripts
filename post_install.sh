@@ -60,3 +60,9 @@ install_zsh
 # INSTALL ZSH CONFIG
 
 install_zconfig
+
+# A ajouter :
+# norminette
+# ledger live
+# pref du terminal et de kde
+#
