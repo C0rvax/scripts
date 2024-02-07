@@ -30,6 +30,7 @@ PKGS=(
 	'fd-find'
 	'ripgrep'
 	'python3'
+	'python3-pip'
 	# APP
 	'freecad'
 	'libreoffice'
