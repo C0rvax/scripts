@@ -31,6 +31,6 @@ echo "     -------------------------------------     " >>$LOG_TXT
 echo >>$LOG_TXT
 echo $(date +%d-%m-%Y) >>$LOG_TXT
 for DIR in "${SRC_DIR[@]}"; do
-	rsync -e "ssh -p $PORT" $OPTS ${DIR} $DEST_ID::$DEST_DIR >>$LOG_TXT
+	rsync -e "ssh -p $PORT" $OPTS ${DIR} $DEST_ID::$DEST_DIR >>$LOG_TXT 2>&1
 done
 echo "     -------------------------------------     " >>$LOG_TXT
