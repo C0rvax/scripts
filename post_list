@@ -16,6 +16,7 @@ PKGS=(
 	# COMPILER
 	'clang'
 	'gcc'
+	'cmake'
 	'make'
 	'valgrind'
 	# UTILS
