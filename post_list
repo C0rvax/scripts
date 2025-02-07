@@ -20,6 +20,7 @@ PKGS=(
 	'make'
 	'valgrind'
 	# UTILS
+	'gparted'
 	'gimp'
 	'htop'
 	'neofetch'
@@ -28,12 +29,13 @@ PKGS=(
 	# TERM
 	'terminator'
 	# NVIM DEPEDENCIES
+	'fzf'
 	'fd-find'
 	'ripgrep'
 	'python3'
 	'python3-pip'
+	'pipx'
 	# APP
-	'freecad'
 	'libreoffice'
 	# ZSH
 	'zsh'
