@@ -62,7 +62,9 @@ install_zsh
 install_zconfig
 
 # A ajouter :
-# norminette
+# pipx install compiledb
+# icon
+# install zsh p10k oh my zsh nulle
 # ledger live
 # pref du terminal et de kde
 #
