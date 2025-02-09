@@ -48,7 +48,7 @@ function install_nvim {
 		echo -e "${vert} #### nvim config is installed! ####${neutre}"
 	else
 		echo -e "${jaune} **** Installing nvim config ****"
-		git clone git@github.com:C0rvax/nvim.git $HOME/.config/nvim
+		git clone https://github.com/C0rvax/nvim.git $HOME/.config/nvim
 	fi
 }
 
@@ -74,7 +74,7 @@ function install_zsh {
 		echo -e "${vert} #### Oh My Zsh is installed! ####${neutre}"
 	else
 		echo -e "${jaune} **** Installing Oh My Zsh ****"
-		sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+		sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 	fi
 	echo ""
 }
@@ -108,8 +108,9 @@ function install_zconfig {
 		echo -e "${vert} #### Zsh config is installed! ####${neutre}"
 	else
 		echo -e "${jaune} **** Installing Zsh config ****"
-		git clone git@github.com:C0rvax/.zsh.git $HOME/.zsh
+		git clone https://github.com/C0rvax/.zsh.git $HOME/.zsh
+		sudo bash .zsh/install_zshrc.sh
 	fi
-	git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+	sudo git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
 	echo -e "${neutre}"
 }
