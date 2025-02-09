@@ -109,7 +109,7 @@ function install_zconfig {
 	else
 		echo -e "${jaune} **** Installing Zsh config ****"
 		git clone https://github.com/C0rvax/.zsh.git $HOME/.zsh
-		sudo bash .zsh/install_zshrc.sh
+		bash .zsh/install_zshrc.sh
 	fi
 	sudo git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
 	echo -e "${neutre}"
