@@ -3,11 +3,11 @@
 source postList
 source postFunctions.sh
 
-get_home_dir
+#get_home_dir
 
 display_logo
 
-#check_sudo
+check_sudo
 
 p_update
 
