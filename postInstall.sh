@@ -44,9 +44,8 @@ install_zconfig
 setup_kde
 
 # A ajouter :
+# ssh
 # pipx install compiledb
-# icon
-# install zsh p10k oh my zsh nulle
+# icon fix
 # ledger live
-# pref du terminal et de kde
 #
