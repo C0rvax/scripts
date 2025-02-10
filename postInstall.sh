@@ -3,6 +3,8 @@
 source postList
 source postFunctions.sh
 
+get_home_dir
+
 display_logo
 
 check_sudo
