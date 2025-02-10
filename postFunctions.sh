@@ -1,3 +1,19 @@
+# GET HOME_DIR DIR
+function get_home_dir {
+	if [[ -z "$SUDO_USER" ]]; then
+		# Le script n'est pas exécuté avec sudo.
+		HOME_DIR_DIR="$HOME_DIR" # Utilise $HOME_DIR si sudo n'est pas utilisé (rare)
+	else
+		# Le script est exécuté avec sudo.
+		SUDO_USER="$SUDO_USER"
+		HOME_DIR_DIR=$(getent passwd "$SUDO_USER" | cut -d: -f6)
+		if [[ -z "$HOME_DIR_DIR" ]]; then
+			echo "Erreur : impossible de déterminer le répertoire personnel de $SUDO_USER"
+			exit 1
+		fi
+	fi
+}
+
 # SET GIT GLOBAL CONFIG
 function install_git {
 	echo -e "${BLUEHI} ---- GIT global config ----"
@@ -30,30 +46,30 @@ function install_git {
 
 # INSTALL NVIM + CONFIG
 function install_nvim {
-	cd $HOME
-	check_file $HOME/AppImage/nvim.appimage
+	cd $HOME_DIR
+	check_file $HOME_DIR/AppImage/nvim.appimage
 	if [ "$?" -eq "1" ]; then
 		echo -e "${GREENHI} #### NeoVim is installed! ####${RESET}"
 	else
-		check_directory $HOME/AppImage
+		check_directory $HOME_DIR/AppImage
 		if [ "$?" -eq "1" ]; then
 			echo -e "${BLUEHI} **** Installing NeoVim ****${YELLOW}"
 		else
 			mkdir AppImage
 		fi
-		cd $HOME/AppImage
-		wget -O nvim-appimage https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage
+		cd $HOME_DIR/AppImage
+		wget -O nvim.appimage https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage
 		chmod u+x nvim.appimage
-		cd $HOME
+		cd $HOME_DIR
 		echo -e "${RESET}"
 	fi
 
-	check_directory $HOME/.config/nvim
+	check_directory $HOME_DIR/.config/nvim
 	if [ "$?" -eq "1" ]; then
 		echo -e "${GREENHI} #### nvim config is installed! ####${RESET}"
 	else
 		echo -e "${BLUEHI} **** Installing nvim config ****${YELLOW}"
-		git clone https://github.com/C0rvax/nvim.git $HOME/.config/nvim
+		git clone https://github.com/C0rvax/nvim.git $HOME_DIR/.config/nvim
 	fi
 }
 
@@ -73,8 +89,8 @@ function install_veracrypt {
 
 # INSTALL OH MY ZSH
 function install_zsh {
-	cd $HOME
-	check_directory $HOME/.oh-my-zsh
+	cd $HOME_DIR
+	check_directory $HOME_DIR/.oh-my-zsh
 	if [ "$?" -eq "1" ]; then
 		echo -e "${GREENHI} #### Oh My Zsh is installed! ####${RESET}"
 	else
@@ -86,56 +102,56 @@ function install_zsh {
 
 # INSTALL FONTS
 function install_fonts {
-	check_directory $HOME/Themes
+	check_directory $HOME_DIR/Themes
 	if [ "$?" -eq "1" ]; then
 		echo -e "${GREENHI} #### Folder Themes already exist! ####${RESET}"
 	else
 		echo -e "${BLUEHI} **** Creating folder ****${YELLOW}"
-		mkdir $HOME/Themes
+		mkdir $HOME_DIR/Themes
 	fi
-	check_directory $HOME/Themes/Fonts
+	check_directory $HOME_DIR/Themes/Fonts
 	if [ "$?" -eq "1" ]; then
 		echo -e "${GREENHI} #### Folder Fonts already exist! ####${RESET}"
 	else
 		echo -e "${BLUEHI} **** Creating folder ****${YELLOW}"
-		mkdir -p $HOME/Themes/Fonts
+		mkdir -p $HOME_DIR/Themes/Fonts
 	fi
-	check_file $HOME/Themes/Fonts/'MesloLGS NF Regular.ttf'
+	check_file $HOME_DIR/Themes/Fonts/'MesloLGS NF Regular.ttf'
 	if [ "$?" -eq "1" ]; then
 		echo -e "${GREENHI} #### Fonts is installed! ####${RESET}"
 	else
 		echo -e "${BLUEHI} **** Installing fonts ****${YELLOW}"
-		curl -L https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf --output ~/Themes/Fonts/'MesloLGS NF Regular.ttf'
-		curl -L https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf --output ~/Themes/Fonts/'MesloLGS NF Bold.ttf'
-		curl -L https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf --output ~/Themes/Fonts/'MesloLGS NF Italic.ttf'
-		curl -L https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf --output ~/Themes/Fonts/'MesloLGS NF Bold Italic.ttf'
+		curl -L https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf --output $HOME_DIR/Themes/Fonts/'MesloLGS NF Regular.ttf'
+		curl -L https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf --output $HOME_DIR/Themes/Fonts/'MesloLGS NF Bold.ttf'
+		curl -L https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf --output $HOME_DIR/Themes/Fonts/'MesloLGS NF Italic.ttf'
+		curl -L https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf --output $HOME_DIR/Themes/Fonts/'MesloLGS NF Bold Italic.ttf'
 	fi
-	check_directory $HOME/Themes/Icons
+	check_directory $HOME_DIR/Themes/Icons
 	if [ "$?" -eq "1" ]; then
 		echo -e "${GREENHI} #### Folder Icons already exist! ####${RESET}"
 	else
 		echo -e "${BLUEHI} **** Creating folder ****${YELLOW}"
-		mkdir $HOME/Themes/Icons
+		mkdir $HOME_DIR/Themes/Icons
 	fi
-	check_directory $HOME/Themes/Icons/buuf-nestort
+	check_directory $HOME_DIR/Themes/Icons/buuf-nestort
 	if [ "$?" -eq "1" ]; then
 		echo -e "${GREENHI} #### buuf-nestort already exist! ####${RESET}"
 	else
 		echo -e "${BLUEHI} **** Downloading Pack ****${YELLOW}"
-		git clone https://git.disroot.org/eudaimon/buuf-nestort.git ~/Themes/Icons/buuf-nestort
-		sudo ln -s ~/Themes/Icons/buuf-nestort /usr/share/icons/buuf-nestort
+		git clone https://git.disroot.org/eudaimon/buuf-nestort.git $HOME_DIR/Themes/Icons/buuf-nestort
+		sudo ln -s $HOME_DIR/Themes/Icons/buuf-nestort /usr/share/icons/buuf-nestort
 	fi
 }
 
 # INSTALL ZSH CONFIG
 function install_zconfig {
-	cd $HOME
-	check_directory $HOME/.zsh
+	cd $HOME_DIR
+	check_directory $HOME_DIR/.zsh
 	if [ "$?" -eq "1" ]; then
 		echo -e "${GREENHI} #### Zsh config is installed! ####${RESET}"
 	else
 		echo -e "${BLUEHI} **** Installing Zsh config ****${YELLOW}"
-		git clone https://github.com/C0rvax/.zsh.git $HOME/.zsh
+		git clone https://github.com/C0rvax/.zsh.git $HOME_DIR/.zsh
 		bash .zsh/install_zshrc.sh
 	fi
 	sudo git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
