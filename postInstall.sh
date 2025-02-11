@@ -43,9 +43,10 @@ install_zconfig
 # INSTALL KDE CONFIG
 setup_kde
 
-# A ajouter :
+# A AJOUTER
 # ssh
-# pipx install compiledb
 # icon fix
+# raccourcis
+# tableau de bord
+# pipx install compiledb
 # ledger live
-#
