@@ -18,6 +18,8 @@ for PKG in "${PKGS[@]}"; do
 	echo -e "${neutre}"
 done
 
+p_update
+
 # INSTALL SPEC
 
 install_git
@@ -40,12 +42,15 @@ install_zsh
 
 install_zconfig
 
+p_update
+
 # INSTALL KDE CONFIG
 setup_kde
 
 # A AJOUTER
-# ssh
+# ssh key
 # icon fix
+# driver nvidia sudo apt install nvidia-driver-550
 # raccourcis
 # tableau de bord
 # pipx install compiledb
