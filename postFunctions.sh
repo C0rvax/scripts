@@ -158,6 +158,13 @@ function install_zconfig {
 	echo -e "${RESET}"
 }
 
+# SET VLC DEFAULT VIDEO PLAYER
+function setup_vlc
+{
+	for type in video/mp4 video/x-matroska video/x-msvideo video/quicktime video/webm video/x-flv video/mpeg; do
+		xdg-mime default vlc.desktop $type
+}
+
 # SET KDE CONFIG
 function setup_kde {
 	# Vérifier si l'environnement est KDE Plasma
