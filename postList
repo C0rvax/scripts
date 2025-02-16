@@ -19,6 +19,7 @@ PKGS=(
 	# PACMAN
 	'curl'
 	'nala'
+	'wget'
 	# COMPILER
 	'clang'
 	'gcc'
@@ -34,6 +35,7 @@ PKGS=(
 	'gnome-disk-utility'
 	'neofetch'
 	'ufw'
+	'net-tools'
 	'git'
 	# TERM
 	'terminator'
@@ -46,6 +48,7 @@ PKGS=(
 	'pipx'
 	# APP
 	'libreoffice'
+	'vlc'
 	# ZSH
 	'zsh'
 )
