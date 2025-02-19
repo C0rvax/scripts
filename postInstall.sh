@@ -47,6 +47,11 @@ p_update
 # INSTALL KDE CONFIG
 setup_kde
 
+setup_vlc
+
+p_update
+p_clean
+
 # A AJOUTER
 # ssh key
 # icon fix

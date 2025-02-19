@@ -30,6 +30,7 @@ PKGS=(
 	'gparted'
 	'gimp'
 	'htop'
+	'btop'
 	'sensors'
 	'inxi'
 	'gnome-disk-utility'
@@ -52,4 +53,3 @@ PKGS=(
 	# ZSH
 	'zsh'
 )
-
