@@ -73,6 +73,12 @@ function install_nvim {
 	fi
 }
 
+# SET BINARIES
+function set_bin{
+	ln -s ~/scripts/synchroToNas.sh ~/.local/bin/babel
+	ln -s ~/scripts/syncToGit.sh ~/.local/bin/syncgit
+}
+
 # INSTALL VERACRYPT
 function install_veracrypt {
 	echo ""
