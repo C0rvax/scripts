@@ -22,7 +22,7 @@ OPTS="--delete -av --backup --backup-dir=$BACKUP_DIR --suffix=$(date +_%Y-%m-%d)
 
 if [ ! -d "$LOG_DIR" ]; then
 	mkdir -p "$LOG_DIR"
-	chmod 777 $LOD_DIR
+	sudo chmod 777 $LOD_DIR
 fi
 
 echo "     -------------------------------------     " >>$LOG_TXT
