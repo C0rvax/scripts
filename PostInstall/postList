@@ -40,6 +40,10 @@ PKGS=(
 	'git'
 	# TERM
 	'terminator'
+	# EMBEDDED
+	'screen'
+	'avr-libc'
+	'avrdude'
 	# NVIM DEPEDENCIES
 	'fzf'
 	'fd-find'
