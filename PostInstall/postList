@@ -41,6 +41,7 @@ PKGS=(
 	# TERM
 	'terminator'
 	# EMBEDDED
+	'nasm'
 	'screen'
 	'avr-libc'
 	'avrdude'
