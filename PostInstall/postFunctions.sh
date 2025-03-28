@@ -74,7 +74,7 @@ function install_nvim {
 }
 
 # SET BINARIES
-function set_bin{
+function set_bin {
 	ln -s ~/scripts/synchroToNas.sh ~/.local/bin/babel
 	ln -s ~/scripts/syncToGit.sh ~/.local/bin/syncgit
 }
@@ -165,10 +165,10 @@ function install_zconfig {
 }
 
 # SET VLC DEFAULT VIDEO PLAYER
-function setup_vlc
-{
+function setup_vlc {
 	for type in video/mp4 video/x-matroska video/x-msvideo video/quicktime video/webm video/x-flv video/mpeg; do
 		xdg-mime default vlc.desktop $type
+	done
 }
 
 # SET KDE CONFIG
@@ -186,6 +186,9 @@ function setup_kde {
 		# Modifier teminal par défaut
 		kwriteconfig5 --file kdeglobals --group General --key TerminalApplication "terminator"
 		kwriteconfig5 --file kdeglobals --group General --key TerminalService "terminator.desktop"
+
+		# Vérifier et ajouter le groupe [Icons] si nécéssaire
+		grep -q '^\[Icons\]' ~/.config/kdeglobals || echo -e "\n[Icons]" >>~/.config/kdeglobals
 
 		# Activer les Icones
 		kwriteconfig5 --file kdeglobals --group Icons --key Theme "buuf-nestort"
