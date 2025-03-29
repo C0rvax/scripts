@@ -14,6 +14,40 @@
 #	fi
 #}
 
+# Detect Linux distribution
+function detect_distro {
+	if [ -f /etc/os-release ]; then
+		. /etc/os-release
+		DISTRO=$ID
+		echo "Distro detected: $DISTRO"
+	else
+		echo "Unsupported distribution."
+		exit 1
+	fi
+}
+
+# Detect desktop environment
+function detect_desktop {
+	if [[ "$XDG_CURRENT_DESKTOP" == *"KDE"* ]] || [[ "$DESKTOP_SESSION" == "plasma" ]]; then
+		DESKTOP="kde"
+	elif [[ "$XDG_CURRENT_DESKTOP" == *"GNOME"* ]] || [[ "$DESKTOP_SESSION" == "gnome" ]]; then
+		DESKTOP="gnome"
+	elif [[ "$XDG_CURRENT_DESKTOP" == *"XFCE"* ]] || [[ "$DESKTOP_SESSION" == "xfce" ]]; then
+		DESKTOP="xfce"
+	elif [[ "$XDG_CURRENT_DESKTOP" == *"LXDE"* ]] || [[ "$DESKTOP_SESSION" == "lxde" ]]; then
+		DESKTOP="lxde"
+	elif [[ "$XDG_CURRENT_DESKTOP" == *"LXQt"* ]] || [[ "$DESKTOP_SESSION" == "lxqt" ]]; then
+		DESKTOP="lxqt"
+	elif [[ "$XDG_CURRENT_DESKTOP" == *"MATE"* ]] || [[ "$DESKTOP_SESSION" == "mate" ]]; then
+		DESKTOP="mate"
+	elif [[ "$XDG_CURRENT_DESKTOP" == *"Cinnamon"* ]] || [[ "$DESKTOP_SESSION" == "cinnamon" ]]; then
+		DESKTOP="cinnamon"
+	else
+		DESKTOP="unknown"
+	fi
+	echo "Desktop detected: $DESKTOP"
+}
+
 # SET GIT GLOBAL CONFIG
 function install_git {
 	echo -e "${BLUEHI} ---- GIT global config ----"
@@ -220,49 +254,173 @@ function setup_kde {
 function setup_gnome {
 	if [[ "$DESKTOP" == "gnome" ]]; then
 		echo "Setting up GNOME-specific configurations..."
-		# Add GNOME-specific configurations here
+
+		# Modifier la police du système
+		gsettings set org.gnome.desktop.interface font-name 'MesloLGS NF 10'
+		gsettings set org.gnome.desktop.interface document-font-name 'MesloLGS NF 10'
+		gsettings set org.gnome.desktop.wm.preferences titlebar-font 'MesloLGS NF Bold 10'
+		gsettings set org.gnome.desktop.interface monospace-font-name 'MesloLGS NF 9'
+
+		# Définir le thème d'icônes
+		gsettings set org.gnome.desktop.interface icon-theme 'buuf-nestort'
+
+		# Définir le thème sombre Breeze
+		gsettings set org.gnome.desktop.interface gtk-theme 'Breeze-Dark'
+		gsettings set org.gnome.desktop.wm.preferences theme 'Breeze-Dark'
+
+		# Modifier le terminal par défaut
+		gsettings set org.gnome.desktop.default-applications.terminal exec 'terminator'
+		gsettings set org.gnome.desktop.default-applications.terminal exec-arg '-x'
+
+		# Afficher les fichiers cachés dans le gestionnaire de fichiers
+		gsettings set org.gnome.nautilus.preferences show-hidden-files true
+
+		# Trier les dossiers en premier
+		gsettings set org.gnome.nautilus.preferences sort-directories-first true
+
+		# Utiliser un simple clic pour ouvrir les fichiers
+		gsettings set org.gnome.nautilus.preferences click-policy 'single'
+
+		# Désactiver les confirmations de suppression
+		gsettings set org.gnome.desktop.interface enable-delete false
+		gsettings set org.gnome.desktop.privacy remember-recent-files false
+
+		# Appliquer les changements immédiatement (relancer GNOME Shell si Wayland)
+		if [ "$XDG_SESSION_TYPE" == "wayland" ]; then
+			gnome-extensions disable "user-theme@gnome-shell-extensions.gcampax.github.com"
+			gnome-extensions enable "user-theme@gnome-shell-extensions.gcampax.github.com"
+		else
+			killall -3 gnome-shell
+		fi
+
+		echo "GNOME configuration applied successfully!"
 	fi
 }
 
-# Adapt XFCE-specific settings (example placeholder)
+
+# SET XFCE CONFIG
 function setup_xfce {
 	if [[ "$DESKTOP" == "xfce" ]]; then
 		echo "Setting up XFCE-specific configurations..."
-		# Add XFCE-specific configurations here
+
+		# Modifier la police du système
+		xfconf-query -c xsettings -p /Gtk/FontName -s "MesloLGS NF 10"
+
+		# Définir le thème d'icônes
+		xfconf-query -c xsettings -p /Net/IconThemeName -s "buuf-nestort"
+
+		# Définir le thème GTK
+		xfconf-query -c xsettings -p /Net/ThemeName -s "Breeze-Dark"
+
+		# Modifier le terminal par défaut
+		xfconf-query -c xfce4-terminal -p /general/default-emulator -s "terminator"
+
+		# Trier les dossiers en premier et afficher les fichiers cachés
+		xfconf-query -c thunar -p /misc-small-toolbar-icons -s false
+		xfconf-query -c thunar -p /misc-show-hidden -s true
+
+		echo "XFCE configuration applied successfully!"
 	fi
 }
 
-# Adapt LXDE-specific settings (example placeholder)
+# SET LXDE CONFIG
 function setup_lxde {
 	if [[ "$DESKTOP" == "lxde" ]]; then
 		echo "Setting up LXDE-specific configurations..."
-		# Add LXDE-specific configurations here
+
+		# Modifier la police du système (Openbox)
+		sed -i 's/^ *<font .*$/  <font>MesloLGS NF 10<\/font>/' ~/.config/openbox/lxde-rc.xml
+
+		# Définir le thème d'icônes
+		sed -i 's/^ *gtk-icon-theme-name=.*$/gtk-icon-theme-name="buuf-nestort"/' ~/.config/lxsession/LXDE/desktop.conf
+
+		# Définir le thème GTK
+		sed -i 's/^ *gtk-theme-name=.*$/gtk-theme-name="Breeze-Dark"/' ~/.config/lxsession/LXDE/desktop.conf
+
+		# Modifier le terminal par défaut
+		sed -i 's/^ *terminal=.*$/terminal=terminator/' ~/.config/lxsession/LXDE/desktop.conf
+
+		echo "LXDE configuration applied successfully!"
 	fi
 }
 
-# Adapt LXQt-specific settings (example placeholder)
+# SET LXQT CONFIG
 function setup_lxqt {
 	if [[ "$DESKTOP" == "lxqt" ]]; then
 		echo "Setting up LXQt-specific configurations..."
-		# Add LXQt-specific configurations here
+
+		# Modifier la police du système
+		lxqt-config-appearance --set-font "MesloLGS NF 10"
+
+		# Définir le thème d'icônes
+		lxqt-config-appearance --set-icon-theme "buuf-nestort"
+
+		# Définir le thème GTK
+		lxqt-config-appearance --set-style "Breeze-Dark"
+
+		# Modifier le terminal par défaut
+		lxqt-config-session --set-terminal "terminator"
+
+		echo "LXQt configuration applied successfully!"
 	fi
 }
 
-# Adapt MATE-specific settings (example placeholder)
+# SET MATE CONFIG
 function setup_mate {
 	if [[ "$DESKTOP" == "mate" ]]; then
 		echo "Setting up MATE-specific configurations..."
-		# Add MATE-specific configurations here
+
+		# Modifier la police du système
+		gsettings set org.mate.interface font-name 'MesloLGS NF 10'
+		gsettings set org.mate.interface document-font-name 'MesloLGS NF 10'
+		gsettings set org.mate.interface monospace-font-name 'MesloLGS NF 9'
+		gsettings set org.mate.Marco.general titlebar-font 'MesloLGS NF Bold 10'
+
+		# Définir le thème d'icônes
+		gsettings set org.mate.interface icon-theme 'buuf-nestort'
+
+		# Définir le thème GTK
+		gsettings set org.mate.interface gtk-theme 'Breeze-Dark'
+
+		# Modifier le terminal par défaut
+		gsettings set org.mate.applications-terminal exec 'terminator'
+
+		# Afficher les fichiers cachés et trier les dossiers en premier
+		gsettings set org.mate.caja.preferences show-hidden-files true
+		gsettings set org.mate.caja.preferences sort-directories-first true
+
+		echo "MATE configuration applied successfully!"
 	fi
 }
 
-# Adapt Cinnamon-specific settings (example placeholder)
+# SET CINNAMON CONFIG
 function setup_cinnamon {
 	if [[ "$DESKTOP" == "cinnamon" ]]; then
 		echo "Setting up Cinnamon-specific configurations..."
-		# Add Cinnamon-specific configurations here
+
+		# Modifier la police du système
+		gsettings set org.cinnamon.desktop.interface font-name 'MesloLGS NF 10'
+		gsettings set org.cinnamon.desktop.interface document-font-name 'MesloLGS NF 10'
+		gsettings set org.cinnamon.desktop.wm.preferences titlebar-font 'MesloLGS NF Bold 10'
+		gsettings set org.cinnamon.desktop.interface monospace-font-name 'MesloLGS NF 9'
+
+		# Définir le thème d'icônes
+		gsettings set org.cinnamon.desktop.interface icon-theme 'buuf-nestort'
+
+		# Définir le thème GTK
+		gsettings set org.cinnamon.desktop.interface gtk-theme 'Breeze-Dark'
+
+		# Modifier le terminal par défaut
+		gsettings set org.cinnamon.desktop.default-applications.terminal exec 'terminator'
+
+		# Afficher les fichiers cachés et trier les dossiers en premier
+		gsettings set org.nemo.preferences show-hidden-files true
+		gsettings set org.nemo.preferences sort-directories-first true
+
+		echo "Cinnamon configuration applied successfully!"
 	fi
 }
+
 
 # FUNCTIONS
 function check_file {
@@ -315,40 +473,6 @@ function get_package {
 		echo "Unsupported distribution for package installation."
 		exit 1
 	fi
-}
-
-# Detect Linux distribution
-function detect_distro {
-	if [ -f /etc/os-release ]; then
-		. /etc/os-release
-		DISTRO=$ID
-		echo "Distro detected: $DISTRO"
-	else
-		echo "Unsupported distribution."
-		exit 1
-	fi
-}
-
-# Detect desktop environment
-function detect_desktop {
-	if [[ "$XDG_CURRENT_DESKTOP" == *"KDE"* ]] || [[ "$DESKTOP_SESSION" == "plasma" ]]; then
-		DESKTOP="kde"
-	elif [[ "$XDG_CURRENT_DESKTOP" == *"GNOME"* ]] || [[ "$DESKTOP_SESSION" == "gnome" ]]; then
-		DESKTOP="gnome"
-	elif [[ "$XDG_CURRENT_DESKTOP" == *"XFCE"* ]] || [[ "$DESKTOP_SESSION" == "xfce" ]]; then
-		DESKTOP="xfce"
-	elif [[ "$XDG_CURRENT_DESKTOP" == *"LXDE"* ]] || [[ "$DESKTOP_SESSION" == "lxde" ]]; then
-		DESKTOP="lxde"
-	elif [[ "$XDG_CURRENT_DESKTOP" == *"LXQt"* ]] || [[ "$DESKTOP_SESSION" == "lxqt" ]]; then
-		DESKTOP="lxqt"
-	elif [[ "$XDG_CURRENT_DESKTOP" == *"MATE"* ]] || [[ "$DESKTOP_SESSION" == "mate" ]]; then
-		DESKTOP="mate"
-	elif [[ "$XDG_CURRENT_DESKTOP" == *"Cinnamon"* ]] || [[ "$DESKTOP_SESSION" == "cinnamon" ]]; then
-		DESKTOP="cinnamon"
-	else
-		DESKTOP="unknown"
-	fi
-	echo "Desktop detected: $DESKTOP"
 }
 
 # Check if launched with sudo

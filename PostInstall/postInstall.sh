@@ -33,6 +33,11 @@ case $install_type in
 		;;
 	2)
 		SELECTED_PKGS=("${LIGHT_PKGS[@]}")
+		# Prompt for optional embedded components
+		read -p "Do you want to include EMBEDDED packages? [y/n]: " include_embedded
+		if [[ "$include_embedded" == "y" || "$include_embedded" == "Y" ]]; then
+			SELECTED_PKGS+=("${EMBEDDED_PKGS[@]}")
+		fi
 		;;
 	*)
 		echo "Invalid choice. Exiting."
