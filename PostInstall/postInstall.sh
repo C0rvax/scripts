@@ -3,18 +3,46 @@
 source postList
 source postFunctions.sh
 
+display_logo
+
 detect_distro
 detect_desktop
-
-display_logo
 
 check_sudo
 
 p_update
 
+# Prompt user for installation type
+echo "Select installation type:"
+echo "1) Full (everything)"
+echo "2) Light (minimal: PACMAN, COMPILER, TERM, NVIM DEPENDENCIES, ZSH)"
+read -p "Enter your choice [1-2]: " install_type
+
+case $install_type in
+	1)
+		SELECTED_PKGS=("${FULL_PKGS[@]}")
+		# Prompt for optional components
+		read -p "Do you want to include EMBEDDED packages? [y/n]: " include_embedded
+		if [[ "$include_embedded" == "y" || "$include_embedded" == "Y" ]]; then
+			SELECTED_PKGS+=("${EMBEDDED_PKGS[@]}")
+		fi
+		read -p "Do you want to include LibreOffice? [y/n]: " include_libreoffice
+		if [[ "$include_libreoffice" == "y" || "$include_libreoffice" == "Y" ]]; then
+			SELECTED_PKGS+=("${OPTIONAL_PKGS[@]}")
+		fi
+		;;
+	2)
+		SELECTED_PKGS=("${LIGHT_PKGS[@]}")
+		;;
+	*)
+		echo "Invalid choice. Exiting."
+		exit 1
+		;;
+esac
+
 # INSTALL PACKAGES
 
-for PKG in "${PKGS[@]}"; do
+for PKG in "${SELECTED_PKGS[@]}"; do
 	install_package ${PKG}
 	echo -e "${neutre}"
 done

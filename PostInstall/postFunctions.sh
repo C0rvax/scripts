@@ -131,6 +131,9 @@ function install_fonts {
 		curl -L https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf --output $HOME/Themes/Fonts/'MesloLGS NF Bold.ttf'
 		curl -L https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf --output $HOME/Themes/Fonts/'MesloLGS NF Italic.ttf'
 		curl -L https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf --output $HOME/Themes/Fonts/'MesloLGS NF Bold Italic.ttf'
+		sudo mkdir -p /usr/share/fonts/truetype/custom
+		sudo cp MesloLGS\ NF\ *.ttf /usr/share/fonts/truetype/custom
+		sudo fc-cache -fv
 	fi
 	check_directory $HOME/Themes/Icons
 	if [ "$?" -eq "1" ]; then
@@ -319,6 +322,7 @@ function detect_distro {
 	if [ -f /etc/os-release ]; then
 		. /etc/os-release
 		DISTRO=$ID
+		echo "Distro detected: $DISTRO"
 	else
 		echo "Unsupported distribution."
 		exit 1
@@ -344,6 +348,7 @@ function detect_desktop {
 	else
 		DESKTOP="unknown"
 	fi
+	echo "Desktop detected: $DESKTOP"
 }
 
 # Check if launched with sudo

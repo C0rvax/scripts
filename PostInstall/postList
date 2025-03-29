@@ -14,7 +14,7 @@ RESET='\e[0;m'
 
 # LIST OF PACKAGES
 
-PKGS=(
+FULL_PKGS=(
 
 	# PACMAN
 	'curl'
@@ -40,11 +40,6 @@ PKGS=(
 	'git'
 	# TERM
 	'terminator'
-	# EMBEDDED
-	'nasm'
-	'screen'
-	'avr-libc'
-	'avrdude'
 	# NVIM DEPEDENCIES
 	'fzf'
 	'fd-find'
@@ -53,10 +48,48 @@ PKGS=(
 	'python3-pip'
 	'pipx'
 	# APP
-	'libreoffice'
 	'vlc'
 	# ZSH
 	'zsh'
+)
+
+# LIGHT INSTALLATION PACKAGES
+LIGHT_PKGS=(
+	# PACMAN
+	'curl'
+	'wget'
+	# COMPILER
+	'clang'
+	'gcc'
+	'cmake'
+	'make'
+	'valgrind'
+	# UTILS
+	'git'
+	# TERM
+	'terminator'
+	# NVIM DEPENDENCIES
+	'fzf'
+	'fd-find'
+	'ripgrep'
+	'python3'
+	'python3-pip'
+	'pipx'
+	# ZSH
+	'zsh'
+)
+
+# EMBEDDED PACKAGES (optional for full installation)
+EMBEDDED_PKGS=(
+	'nasm'
+	'screen'
+	'avr-libc'
+	'avrdude'
+)
+
+# OPTIONAL PACKAGES (e.g., libreoffice)
+OPTIONAL_PKGS=(
+	'libreoffice'
 )
 
 if false; then
@@ -85,4 +118,3 @@ elif [[ "$DISTRO" == "opensuse" ]]; then
 	)
 	fi
 fi
-END
