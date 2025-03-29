@@ -173,8 +173,7 @@ function setup_vlc {
 
 # SET KDE CONFIG
 function setup_kde {
-	# Vérifier si l'environnement est KDE Plasma
-	if [[ "$XDG_CURRENT_DESKTOP" == *"KDE"* ]] || [[ "$DESKTOP_SESSION" == "plasma" ]] || qdbus org.kde.PlasmaShell >/dev/null 2>&1; then
+	if [[ "$DESKTOP" == "kde" ]]; then
 		# Modifier la police du système
 		kwriteconfig5 --file kdeglobals --group General --key fixed "MesloLGS NF,9,-1,5,50,0,0,0,0,0"
 		kwriteconfig5 --file kdeglobals --group General --key font "MesloLGS NF,10,-1,5,50,0,0,0,0,0,Regular"
@@ -211,6 +210,54 @@ function setup_kde {
 
 		# Appliquer les changements
 		qdbus org.kde.KWin /KWin reconfigure
+	fi
+}
+
+# Adapt GNOME-specific settings (example placeholder)
+function setup_gnome {
+	if [[ "$DESKTOP" == "gnome" ]]; then
+		echo "Setting up GNOME-specific configurations..."
+		# Add GNOME-specific configurations here
+	fi
+}
+
+# Adapt XFCE-specific settings (example placeholder)
+function setup_xfce {
+	if [[ "$DESKTOP" == "xfce" ]]; then
+		echo "Setting up XFCE-specific configurations..."
+		# Add XFCE-specific configurations here
+	fi
+}
+
+# Adapt LXDE-specific settings (example placeholder)
+function setup_lxde {
+	if [[ "$DESKTOP" == "lxde" ]]; then
+		echo "Setting up LXDE-specific configurations..."
+		# Add LXDE-specific configurations here
+	fi
+}
+
+# Adapt LXQt-specific settings (example placeholder)
+function setup_lxqt {
+	if [[ "$DESKTOP" == "lxqt" ]]; then
+		echo "Setting up LXQt-specific configurations..."
+		# Add LXQt-specific configurations here
+	fi
+}
+
+# Adapt MATE-specific settings (example placeholder)
+function setup_mate {
+	if [[ "$DESKTOP" == "mate" ]]; then
+		echo "Setting up MATE-specific configurations..."
+		# Add MATE-specific configurations here
+	fi
+}
+
+# Adapt Cinnamon-specific settings (example placeholder)
+function setup_cinnamon {
+	if [[ "$DESKTOP" == "cinnamon" ]]; then
+		echo "Setting up Cinnamon-specific configurations..."
+		# Add Cinnamon-specific configurations here
 	fi
 }
 
@@ -251,10 +298,52 @@ function install_package {
 	fi
 }
 
+# Modify package installation for more distributions
 function get_package {
+	if [[ "$DISTRO" == "arch" ]]; then
+		sudo pacman -S --noconfirm ${1}
+	elif [[ "$DISTRO" == "ubuntu" ]] || [[ "$DISTRO" == "debian" ]]; then
+		sudo apt-get install -y ${1}
+	elif [[ "$DISTRO" == "fedora" ]]; then
+		sudo dnf install -y ${1}
+	elif [[ "$DISTRO" == "opensuse" ]]; then
+		sudo zypper install -y ${1}
+	else
+		echo "Unsupported distribution for package installation."
+		exit 1
+	fi
+}
 
-	sudo apt-get install -y ${1}
+# Detect Linux distribution
+function detect_distro {
+	if [ -f /etc/os-release ]; then
+		. /etc/os-release
+		DISTRO=$ID
+	else
+		echo "Unsupported distribution."
+		exit 1
+	fi
+}
 
+# Detect desktop environment
+function detect_desktop {
+	if [[ "$XDG_CURRENT_DESKTOP" == *"KDE"* ]] || [[ "$DESKTOP_SESSION" == "plasma" ]]; then
+		DESKTOP="kde"
+	elif [[ "$XDG_CURRENT_DESKTOP" == *"GNOME"* ]] || [[ "$DESKTOP_SESSION" == "gnome" ]]; then
+		DESKTOP="gnome"
+	elif [[ "$XDG_CURRENT_DESKTOP" == *"XFCE"* ]] || [[ "$DESKTOP_SESSION" == "xfce" ]]; then
+		DESKTOP="xfce"
+	elif [[ "$XDG_CURRENT_DESKTOP" == *"LXDE"* ]] || [[ "$DESKTOP_SESSION" == "lxde" ]]; then
+		DESKTOP="lxde"
+	elif [[ "$XDG_CURRENT_DESKTOP" == *"LXQt"* ]] || [[ "$DESKTOP_SESSION" == "lxqt" ]]; then
+		DESKTOP="lxqt"
+	elif [[ "$XDG_CURRENT_DESKTOP" == *"MATE"* ]] || [[ "$DESKTOP_SESSION" == "mate" ]]; then
+		DESKTOP="mate"
+	elif [[ "$XDG_CURRENT_DESKTOP" == *"Cinnamon"* ]] || [[ "$DESKTOP_SESSION" == "cinnamon" ]]; then
+		DESKTOP="cinnamon"
+	else
+		DESKTOP="unknown"
+	fi
 }
 
 # Check if launched with sudo

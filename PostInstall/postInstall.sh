@@ -3,7 +3,8 @@
 source postList
 source postFunctions.sh
 
-#get_home_dir
+detect_distro
+detect_desktop
 
 display_logo
 
@@ -44,8 +45,22 @@ install_zconfig
 
 p_update
 
-# INSTALL KDE CONFIG
-setup_kde
+# INSTALL DESKTOP CONFIG
+if [[ "$DESKTOP" == "kde" ]]; then
+	setup_kde
+elif [[ "$DESKTOP" == "gnome" ]]; then
+	setup_gnome
+elif [[ "$DESKTOP" == "xfce" ]]; then
+	setup_xfce
+elif [[ "$DESKTOP" == "lxde" ]]; then
+	setup_lxde
+elif [[ "$DESKTOP" == "lxqt" ]]; then
+	setup_lxqt
+elif [[ "$DESKTOP" == "mate" ]]; then
+	setup_mate
+elif [[ "$DESKTOP" == "cinnamon" ]]; then
+	setup_cinnamon
+fi
 
 setup_vlc
 

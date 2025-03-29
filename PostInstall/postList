@@ -58,3 +58,31 @@ PKGS=(
 	# ZSH
 	'zsh'
 )
+
+if false; then
+if [[ "$DISTRO" == "arch" ]]; then
+	PKGS+=(
+		# Arch-specific packages
+		'base-devel'
+		'pacman-contrib'
+	)
+elif [[ "$DISTRO" == "ubuntu" ]] || [[ "$DISTRO" == "debian" ]]; then
+	PKGS+=(
+		# Debian/Ubuntu-specific packages
+		'build-essential'
+		'software-properties-common'
+	)
+elif [[ "$DISTRO" == "fedora" ]]; then
+	PKGS+=(
+		# Fedora-specific packages
+		'@development-tools'
+		'dnf-plugins-core'
+	)
+elif [[ "$DISTRO" == "opensuse" ]]; then
+	PKGS+=(
+		# openSUSE-specific packages
+		'patterns-devel-base-devel_basis'
+	)
+	fi
+fi
+END

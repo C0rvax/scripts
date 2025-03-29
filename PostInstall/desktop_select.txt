@@ -1,0 +1,102 @@
+#!/bin/bash
+
+# Détecter l'environnement de bureau
+desktop_env=$(echo "$XDG_CURRENT_DESKTOP" | tr '[:upper:]' '[:lower:]')
+
+echo "Détection de l'environnement de bureau : $desktop_env"
+
+# Adapter le script en fonction de l'environnement détecté
+case "$desktop_env" in
+    kde|plasma)
+        echo "Environnement détecté : KDE Plasma"
+        # Ajoutez ici les commandes spécifiques à KDE Plasma
+        ;;
+    lxde|lxqt)
+        echo "Environnement détecté : LXDE/LXQt"
+        # Ajoutez ici les commandes spécifiques à LXDE ou LXQt
+        ;;
+    gnome)
+        echo "Environnement détecté : GNOME"
+        # Ajoutez ici les commandes spécifiques à GNOME
+        ;;
+    xfce)
+        echo "Environnement détecté : XFCE"
+        # Ajoutez ici les commandes spécifiques à XFCE
+        ;;
+    mate)
+        echo "Environnement détecté : MATE"
+        # Ajoutez ici les commandes spécifiques à MATE
+        ;;
+    cinnamon)
+        echo "Environnement détecté : Cinnamon"
+        # Ajoutez ici les commandes spécifiques à Cinnamon
+        ;;
+    *)
+        echo "Environnement inconnu ou non pris en charge"
+        ;;
+esac
+
+Oui, ce code fonctionne pour la plupart des environnements de bureau sous Linux, mais avec quelques nuances :
+Explication du code :
+
+    Créer un dossier pour les polices personnalisées :
+
+sudo mkdir -p /usr/share/fonts/truetype/custom
+
+    /usr/share/fonts/truetype/custom/ est un emplacement standard où les polices sont accessibles à tous les utilisateurs.
+
+    Fonctionne sur GNOME, KDE, XFCE, LXDE, MATE, Cinnamon, etc.
+
+Copier les fichiers .ttf dans ce dossier :
+
+sudo cp MesloLGS\ NF\ *.ttf /usr/share/fonts/truetype/custom/
+
+    Cette commande copie toutes les variantes de la police MesloLGS NF dans le dossier des polices.
+
+    Attention : Assure-toi que les fichiers .ttf sont dans le répertoire actuel lorsque tu exécutes cette commande.
+
+Mettre à jour le cache des polices :
+
+    sudo fc-cache -fv
+
+        Cette commande force la mise à jour du cache des polices pour que le système détecte les nouvelles.
+
+        Fonctionne sur toutes les distributions Linux utilisant fontconfig, ce qui couvre presque tous les environnements graphiques.
+
+Exceptions et particularités selon les environnements :
+
+✅ GNOME (Ubuntu, Fedora, Debian, etc.) → Fonctionne.
+✅ KDE Plasma (Kubuntu, OpenSUSE, Manjaro KDE, etc.) → Fonctionne.
+✅ XFCE (Xubuntu, Manjaro XFCE, etc.) → Fonctionne.
+✅ LXDE/LXQt (Lubuntu, Raspberry Pi OS, etc.) → Fonctionne.
+✅ MATE (Ubuntu MATE, Linux Mint MATE, etc.) → Fonctionne.
+✅ Cinnamon (Linux Mint, Ubuntu Cinnamon, etc.) → Fonctionne.
+
+🔸 Particularité sur Arch Linux et Manjaro :
+
+    Il est recommandé d'utiliser le dossier /usr/local/share/fonts au lieu de /usr/share/fonts, car /usr/share/fonts peut être géré par le système et écrasé lors des mises à jour.
+
+🔸 Particularité sur certaines distributions minimalistes :
+
+    Certaines distributions légères (Alpine Linux, Tiny Core Linux) peuvent ne pas avoir fc-cache installé par défaut. Dans ce cas, il faudra installer fontconfig avec :
+
+    sudo apt install fontconfig  # Debian/Ubuntu
+    sudo pacman -S fontconfig     # Arch Linux
+    sudo dnf install fontconfig   # Fedora
+
+Alternative : Installer uniquement pour un utilisateur (sans sudo)
+
+Si tu veux installer la police uniquement pour ton utilisateur, utilise plutôt :
+
+mkdir -p ~/.fonts
+cp MesloLGS\ NF\ *.ttf ~/.fonts/
+fc-cache -fv
+
+👉 Avantage : Pas besoin de droits sudo, et ça fonctionne sur toutes les distributions.
+Conclusion
+
+✅ Oui, ce code fonctionne pour presque tous les bureaux Linux.
+✅ Si tu veux une installation uniquement pour un utilisateur, utilise ~/.fonts/.
+✅ Sur Arch Linux, il vaut mieux utiliser /usr/local/share/fonts/.
+
+Tu es prêt à installer tes polices partout ! 🚀
