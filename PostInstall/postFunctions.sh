@@ -238,6 +238,10 @@ function setup_kde {
 		kwriteconfig5 --file kdeglobals --group "KFileDialog Settings" --key "Sort hidden files last" true
 		kwriteconfig5 --file kdeglobals --group "KFileDialog Settings" --key "View Style" "DetailTree"
 
+		# Raccourci terminator
+		#kwriteconfig5 --file kglobalshortcutsrc --group "kde-konsole.desktop" --key "NewTerminal" "terminator,none,Open Terminal"
+		sed -i 's|konsole|terminator|' ~/.config/kglobalshortcutsrc
+
 		# Configurer un simple clic pour ouvrir les fichiers
 		kwriteconfig5 --file kdeglobals --group KDE --key SingleClick false
 
