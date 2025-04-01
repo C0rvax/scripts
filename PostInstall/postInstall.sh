@@ -108,3 +108,4 @@ p_clean
 # tableau de bord
 # pipx install compiledb
 # ledger live
+# ssh-keygen -t rsa -b 2048 -f ~/.ssh/id_rsa
