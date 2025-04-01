@@ -48,6 +48,13 @@ function detect_desktop {
 	echo "Desktop detected: $DESKTOP"
 }
 
+# INSTALL FIREFOX WITH FLATPAK
+function install_firefox {
+	sudo apt install flatpak
+	flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+	flatpak install flathub org.mozilla.firefox
+}
+
 # SET GIT GLOBAL CONFIG
 function install_git {
 	echo -e "${BLUEHI} ---- GIT global config ----"
