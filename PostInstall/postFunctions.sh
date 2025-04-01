@@ -127,6 +127,44 @@ function install_veracrypt {
 	fi
 }
 
+# INSTALL NODEJS
+function install_node {
+	curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+	source ~/.zshrc
+	nvm install node # Installe la dernière version stable
+	nvm use node
+
+	#nvm install 20
+	#nvm use 20
+}
+
+# INSTALL DOCKER
+function install_docker_ubuntu {
+	if [[ "$DISTRO" == "ubuntu" ]]; then
+		#remove wrong pkgs
+		for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done
+
+		#set up apt repo
+		# Add Docker's official GPG key:
+		sudo apt-get update
+		sudo apt-get install ca-certificates curl
+		sudo install -m 0755 -d /etc/apt/keyrings
+		sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+		sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+		# Add the repository to Apt sources:
+		echo \
+			"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" |
+			sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+		sudo apt-get update
+
+		sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+		sudo usermod -aG docker $USER
+	fi
+}
+
 # INSTALL OH MY ZSH
 function install_zsh {
 	cd $HOME
@@ -301,7 +339,6 @@ function setup_gnome {
 	fi
 }
 
-
 # SET XFCE CONFIG
 function setup_xfce {
 	if [[ "$DESKTOP" == "xfce" ]]; then
@@ -424,7 +461,6 @@ function setup_cinnamon {
 		echo "Cinnamon configuration applied successfully!"
 	fi
 }
-
 
 # FUNCTIONS
 function check_file {
