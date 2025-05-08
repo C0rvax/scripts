@@ -81,6 +81,7 @@ p_update
 # INSTALL DESKTOP CONFIG
 if [[ "$DESKTOP" == "kde" ]]; then
 	setup_kde
+	install_docker_ubuntu
 elif [[ "$DESKTOP" == "gnome" ]]; then
 	setup_gnome
 elif [[ "$DESKTOP" == "xfce" ]]; then
@@ -97,11 +98,15 @@ fi
 
 setup_vlc
 
+# set-bin
+
+create_ssh_key
+install_node
+
 p_update
 p_clean
 
 # A AJOUTER
-# ssh key
 # icon fix
 # driver nvidia sudo apt install nvidia-driver-550
 # raccourcis

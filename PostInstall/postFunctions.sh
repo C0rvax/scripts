@@ -136,6 +136,7 @@ function install_veracrypt {
 
 # INSTALL NODEJS
 function install_node {
+	cd
 	curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
 	source ~/.zshrc
 	nvm install node # Installe la dernière version stable
@@ -229,6 +230,15 @@ function install_fonts {
 		git clone https://git.disroot.org/eudaimon/buuf-nestort.git $HOME/Themes/Icons/buuf-nestort
 		sudo ln -s $HOME/Themes/Icons/buuf-nestort /usr/share/icons/buuf-nestort
 	fi
+}
+
+# CREATE SSH KEY
+function create_ssh_key {
+	ssh-keygen -t ed25519 -C "c0rvax" -N "" -f ~/.ssh/id_ed25519
+
+# S'assurer des bonnes permissions pour la clé privée
+	chmod 600 ~/.ssh/id_ed25519
+	chmod 644 ~/.ssh/id_ed25519.pub
 }
 
 # INSTALL ZSH CONFIG
