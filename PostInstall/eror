@@ -1,3 +1,0 @@
-msg_show blink.cmp No fuzzzy matching library found! Try building from source via build = 'cargobuild --release' in your lazy.nvim spec and re-installing (requires Rust nightly), or switch to a git tag via version = '1.*' in your lazy.nvim spec, or set fuzzy.prebuild_binaries.force_version
-blink.cmp Falling back to lua implementation due to error while downloading pre-built binary, set fuzzy. implementation to "prefer_rust" or "lua" to disable this warning.
-Failed to run 'config' for nvim-lspconfig
