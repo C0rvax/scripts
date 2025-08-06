@@ -1,12 +1,11 @@
-Absolument. Faire tourner ce script avec `crontab` est l'objectif final parfait pour une automatisation complète.
+# SCRIPT BACKUP CRON/CRONTAB
 
-Cependant, l'exécution via `cron` est très différente d'une exécution manuelle dans un terminal. Il y a des contraintes importantes à connaître. Voici un guide complet pour le mettre en place correctement et éviter les pièges courants.
 
-### Étape 1 : Prérequis Indispensables
+## Étape 1 : Prérequis Indispensables
 
 Avant même d'ouvrir `crontab`, vous devez vérifier ces deux points. C'est ici que 90% des problèmes avec `cron` et SSH se produisent.
 
-#### 1. Authentification SSH par Clé pour l'utilisateur `root`
+### 1. Authentification SSH par Clé pour l'utilisateur `root`
 
 Un `cron job` s'exécute en arrière-plan, sans terminal. Il ne peut donc **jamais** vous demander un mot de passe. Votre script doit pouvoir se connecter au serveur distant sans aucune interaction.
 
@@ -31,7 +30,7 @@ Comme votre script doit être lancé avec `sudo` (ou directement par `root`) pou
     C'est la commande magique qui configure tout pour vous. Remplacez `<PORT>`, `<REMOTE_USER>` et `<REMOTE_HOST>` par les valeurs de votre fichier `babel.conf`.
     ```bash
     sudo ssh-copy-id -p <PORT> <REMOTE_USER>@<REMOTE_HOST>
-    ```    *Exemple :* `sudo ssh-copy-id -p 22 c0rvax@192.168.1.6`
+    ```    *Exemple :* `sudo ssh-copy-id -p 22 remoteUser@192.168.1.113`
 
 4.  **Testez la connexion EN TANT QUE ROOT :**
     Ceci est l'étape de validation la plus importante. Si cette commande fonctionne sans vous demander de mot de passe, vous êtes prêt pour `cron`.
@@ -40,13 +39,13 @@ Comme votre script doit être lancé avec `sudo` (ou directement par `root`) pou
     ```
     Si "Connexion reussie" s'affiche sans prompt de mot de passe, tout est parfait.
 
-#### 2. Le script doit être exécutable
+### 2. Le script doit être exécutable
 Assurez-vous que votre fichier de script a bien la permission d'exécution.
 ```bash
 chmod +x /chemin/absolu/vers/votre/script.sh
 ```
 
-### Étape 2 : Configurer le Cron Job
+## Étape 2 : Configurer le Cron Job
 
 Vous allez ajouter votre script à la table des `cron jobs` de l'utilisateur `root`.
 
@@ -72,25 +71,25 @@ Vous allez ajouter votre script à la table des `cron jobs` de l'utilisateur `ro
     **Votre ligne doit utiliser des chemins absolus pour tout.**
 
     *   `/chemin/absolu/vers/votre/script.sh`
-    *   `/chemin/absolu/vers/votre/babel.conf`
+    *   `/chemin/absolu/vers/votre/fichier.conf`
 
-### Exemples de lignes à ajouter :
+## Exemples de lignes à ajouter :
 
 Voici quelques exemples concrets. Choisissez celui qui correspond à vos besoins et adaptez les chemins.
 
 **Exemple 1 : Tous les jours à 2h05 du matin**
 ```cron
-5 2 * * * /home/c0rvax/scripts/backup.sh /home/c0rvax/secrets/babel.conf```
+5 2 * * * /chemin/absolu/vers/votre/script.sh /chemin/absolu/vers/votre/fichier.conf```
 
 **Exemple 2 : Tous les dimanches à 23h30**
 ```cron
-30 23 * * 0 /opt/scripts/backup.sh /etc/backup_configs/babel.conf
+30 23 * * 0 /opt/scripts/script.sh /etc/backup_configs/fichier.conf
 ```
 
 **Exemple 3 : Toutes les 4 heures**
 (C'est une syntaxe pratique pour les répétitions)
 ```cron
-0 */4 * * * /chemin/absolu/vers/backup.sh /chemin/absolu/vers/babel.conf
+0 */4 * * * /chemin/absolu/vers/script.sh /chemin/absolu/vers/fichier.conf
 ```
 
 #### Gestion des logs de Cron (Bonne pratique)
@@ -101,7 +100,7 @@ La meilleure façon est de l'ajouter à votre propre fichier de log.
 
 **Ligne cron finale et recommandée :**
 ```cron
-5 2 * * * /home/c0rvax/scripts/backup.sh /home/c0rvax/secrets/babel.conf >> /home/c0rvax/log/synchroToNas.log 2>&1
+5 2 * * * /chemin/absolu/vers/script.sh /chemin/absolu/vers/fichier.conf >> /chemin/absolu/vers/script.log 2>&1
 ```
 
 *   `>> /chemin/vers/votre.log` : Ajoute la sortie standard (stdout) à la fin de votre fichier de log.
@@ -117,7 +116,7 @@ Excellente question ! Utiliser `anacron` est souvent une bien meilleure solution
 
 C'est probablement le choix le plus robuste et le plus simple pour votre besoin de sauvegarde.
 
-### Qu'est-ce que Anacron ? Cron vs Anacron
+## Qu'est-ce que Anacron ? Cron vs Anacron
 
 Pensez à `cron` comme une alarme stricte et à `anacron` comme un assistant intelligent.
 
@@ -134,9 +133,7 @@ Pensez à `cron` comme une alarme stricte et à `anacron` comme un assistant int
 | **Granularité** | Peut descendre jusqu'à la minute. | Généralement jour, semaine, mois. |
 | **Cas d'usage idéal** | Serveurs (toujours allumés). | Ordinateurs de bureau, portables. |
 
-Pour votre script de sauvegarde, `anacron` est parfait car il garantit que votre sauvegarde sera effectuée une fois par jour, que vous allumiez votre PC à 9h du matin ou à 19h.
-
-### Comment utiliser Anacron avec votre script (La méthode simple)
+### Comment utiliser Anacron avec un script (La méthode simple)
 
 La plupart des systèmes Linux utilisant `anacron` sont déjà préconfigurés avec des répertoires spéciaux. Il suffit de placer votre script dans le bon répertoire, et `anacron` s'occupera du reste.
 
@@ -144,18 +141,16 @@ La plupart des systèmes Linux utilisant `anacron` sont déjà préconfigurés a
 
 Quand `anacron` exécute un script, il ne passe pas d'argument. La ligne `CONFIG_FILE="${1:-...}"` ne fonctionnera donc pas. Vous devez mettre le chemin absolu vers votre fichier de configuration **en dur** dans le script.
 
-Modifiez la première ligne de votre script `backup.sh` comme ceci :
+Modifiez la première ligne de votre script `script.sh` comme ceci :
 
 *   **Ligne à supprimer :**
     ```bash
-    CONFIG_FILE="${1:-$HOME/secrets/babel.conf}"
+    CONFIG_FILE="${1:-$HOME/vers/fichier.conf}"
     ```
 *   **Nouvelle ligne (avec votre chemin absolu) :**
     ```bash
-    CONFIG_FILE="/home/c0rvax/secrets/babel.conf"
+    CONFIG_FILE="/chemin/absolu/vers/fichier.conf"
     ```
-
-C'est le seul changement nécessaire dans le code du script.
 
 #### Étape 2 : Placer le script dans le répertoire `cron.daily`
 
@@ -163,7 +158,7 @@ C'est le seul changement nécessaire dans le code du script.
 
 2.  **Déplacez et renommez votre script :**
     ```bash
-    sudo mv /chemin/vers/votre/backup.sh /etc/cron.daily/sauvegarde-perso
+    sudo mv /chemin/vers/votre/script.sh /etc/cron.daily/sauvegarde-perso
     ```
 
 3.  **Assurez-vous qu'il est exécutable et appartient à `root` :** C'est indispensable pour que le système puisse l'exécuter.
