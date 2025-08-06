@@ -1,6 +1,7 @@
 #!/bin/bash
 
-CONFIG_FILE="${1:-$HOME/secrets/babel.conf}"
+#CONFIG_FILE="${1:-$HOME/secrets/babel.conf}"
+CONFIG_FILE="/home/c0rvax/secrets/babel.conf"
 
 if [ ! -f "$CONFIG_FILE" ]; then
 	echo "Configuration file not found: $CONFIG_FILE"
